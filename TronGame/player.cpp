@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "playerClass.hpp"
+#include "player.hpp"
 #include "settings.hpp"
 
 Player::Player(float X, float Y, sf::Color color) {
