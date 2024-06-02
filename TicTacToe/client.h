@@ -1,8 +1,16 @@
-//
-// Created by user on 20.04.24.
-//
+#pragma once
 
-#ifndef CPP_COOP_GAMES_CLIENT_H
-#define CPP_COOP_GAMES_CLIENT_H
+#include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 
-#endif //CPP_COOP_GAMES_CLIENT_H
+
+void isCWin(bool&, int[3][3]);
+
+void clientDrawMap(sf::RenderWindow&);
+
+void clientDrawCircle(int, int, std::vector<std::pair<int, int>>&);
+
+void clientDrawSquare(int, int, std::vector<std::pair<int, int>>&, int[3][3], int&, int&, int&);
+
+void client();
+
