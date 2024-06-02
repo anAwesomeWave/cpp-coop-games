@@ -11,6 +11,11 @@ int main() {
     Clock clock;
     Time timer;
 
+    Texture bgTexture;
+    bgTexture.loadFromFile(BG_IMAGE);
+    bgTexture.setSmooth(true);
+    Sprite bgSprite(bgTexture);
+
     bool game = true;
     int whoLose = 0;
 
@@ -22,9 +27,10 @@ int main() {
             if (event.type == Event::Closed) {
                 window.close();
             }
-            window.clear();
-            window.display();
         }
+        window.clear();
+        window.draw(bgSprite);
+        window.display();
     }
     return 0;
 }
