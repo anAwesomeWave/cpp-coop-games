@@ -1,9 +1,4 @@
-//
-// Created by tim on 19.05.24.
-//
-
-#ifndef PLAYERCLASS_HPP_INCLUDED
-#define PLAYERCLASS_HPP_INCLUDED
+#pragma once
 
 class Player {
 private:
@@ -16,5 +11,3 @@ public:
     Player(float X, float Y, sf::Color color);
     void move();
 };
-
-#endif // PLAYERCLASS_HPP_INCLUDED
