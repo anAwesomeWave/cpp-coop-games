@@ -10,4 +10,9 @@ private:
 public:
     Player(float X, float Y, sf::Color color);
     void move();
+    void draw(sf::RenderWindow& window);
+    void setDir(int n);
+    int getDir();
+    float getX();
+    float getY();
 };
