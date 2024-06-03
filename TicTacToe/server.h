@@ -4,12 +4,12 @@
 #include <SFML/Network.hpp>
 
 
-int server();
+void server();
 
-void drawMap(sf::RenderWindow&);
+void drawMap(sf::RenderWindow &);
 
-void isWin(bool& isServerWin, int** mapOfTheGame);
+bool isWin(const std::vector<std::vector<int>> &mapOfTheGame);
 
-void drawCircle(int, int, std::vector<std::pair<int, int>>&, int** mapOfTheGame, int, int, int);
+void drawCircle(int, int, std::vector<std::pair<int, int>>&, std::vector<std::vector<int>>& , int, int, int);
 
-void drawSquare(int, int, std::vector<std::pair<int, int>>&);
+void drawSquare(int, int, std::vector <std::pair<int, int>> &);

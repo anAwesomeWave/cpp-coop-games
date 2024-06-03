@@ -2,11 +2,14 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 #include <vector>
+
 #include "settings.hpp"
+#include "server.h"
+
 
 using namespace sf;
 
-void isWin(bool& isServerWin, int mapOfTheGame[3][3]) {
+bool isWin(const std::vector<std::vector<int>>& mapOfTheGame) {
     if((mapOfTheGame[0][0] == 1 && mapOfTheGame[0][1] == 1 && mapOfTheGame[0][2]) ||
        (mapOfTheGame[1][0] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[1][2]) ||
        (mapOfTheGame[2][0] == 1 && mapOfTheGame[2][1] == 1 && mapOfTheGame[2][2]) ||
@@ -15,12 +18,13 @@ void isWin(bool& isServerWin, int mapOfTheGame[3][3]) {
        (mapOfTheGame[0][2] == 1 && mapOfTheGame[1][2] == 1 && mapOfTheGame[2][2]) ||
        (mapOfTheGame[0][0] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[2][2]) ||
        (mapOfTheGame[0][2] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[2][0])) {
-        isServerWin = true;
-
+        return true;
     }
+    return false;
 }
 
 void drawMap(RenderWindow& window) {
+    // can test window.getSize after calling this func
     for(int i = 200; i < SCR_WIDTH; i += 200) {
             RectangleShape rect1, rect2;
             rect1.setFillColor({0, 0, 0});
@@ -35,8 +39,17 @@ void drawMap(RenderWindow& window) {
     }
 }
 
-void drawCircle(int x, int y, std::vector<std::pair<int, int>>& balls, int mapOfTheGame[3][3], int& turn, int& sendX, int& sendY) {
+void drawCircle(
+        int x,
+        int y,
+        std::vector<std::pair<int, int>>& balls,
+        std::vector<std::vector<int>>& mapOfTheGame,
+        int turn,
+        int sendX,
+        int sendY
+){
     if(x < 0 || y < 0) return;
+
     if(mapOfTheGame[y / 200][x / 200] == 1 || mapOfTheGame[y / 200][x / 200] == 2){
         sendX = -1;
         sendY = -1;
@@ -107,7 +120,9 @@ void server()
 {
     sf::RenderWindow window(sf::VideoMode(SCR_WIDTH, SCR_HEIGHT), "TicTacToeServer");
     int turn = 0; // 0 - server, 1 - client
-    int mapOfTheGame[3][3] = {0};
+    std::vector<std::vector<int>> mapOfTheGame(3, std::vector<int>(3));
+//    for (auto &i : mapOfTheGame)
+//        std::fill(i.begin(), i.end(), 0);
 
     std::vector<std::pair<int, int>> balls;
     std::vector<std::pair<int, int>> squares;
@@ -166,7 +181,7 @@ void server()
             if(event.type == Event::MouseButtonPressed) {
                 if(event.key.code == Mouse::Left && turn == 0 && !isServerWin && !isClientWin) {
                     drawCircle(Mouse::getPosition(window).x, Mouse::getPosition(window).y, balls, mapOfTheGame, turn, sendX, sendY);
-                    isWin(isServerWin, mapOfTheGame);
+                    isServerWin = isWin(mapOfTheGame);
                     if(timer.asSeconds() >= DELAY) {
                         timer = Time::Zero;
                         packet << sendX << sendY << turn << isServerWin;
