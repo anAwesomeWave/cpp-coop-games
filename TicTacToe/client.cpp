@@ -6,6 +6,14 @@
 
 using namespace sf;
 
+/**
+* @brief Client win check
+*
+* The function checks if the client has won the game.
+*
+* @param isClientWin Reference on the boolean variable of the client's win
+* @param mapOfTheGame Game map with turn data
+*/
 void isCWin(bool& isClientWin, int mapOfTheGame[3][3]){
     if((mapOfTheGame[0][0] == 2 && mapOfTheGame[0][1] == 2 && mapOfTheGame[0][2] == 2) ||
        (mapOfTheGame[1][0] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[1][2] == 2) ||
@@ -19,6 +27,13 @@ void isCWin(bool& isClientWin, int mapOfTheGame[3][3]){
     }
 }
 
+/**
+* @brief Drawing a field
+*
+* The function draws a field in real time.
+*
+* @param window Reference on the window that is used to draw the map
+*/
 void clientDrawMap(RenderWindow& window) {
     for(int i = 200; i < SCR_WIDTH; i += 200) {
             RectangleShape rect1, rect2;
@@ -34,6 +49,17 @@ void clientDrawMap(RenderWindow& window) {
     }
 }
 
+/**
+* @brief Drawing a circle
+*
+* The function draws a circle on the game field
+*
+* @param x X coordiate of the cell
+* @param y Y coordiate of the cell
+* @param balls Vector with circle coordinates
+*
+* @return Program exit status
+*/
 void clientDrawCircle(int x, int y, std::vector<std::pair<int, int>>& balls) {
     if(x < 0 || y < 0) return;
     if(x < 200) {
@@ -63,6 +89,21 @@ void clientDrawCircle(int x, int y, std::vector<std::pair<int, int>>& balls) {
     }
 }
 
+/**
+* @brief Drawing a square
+*
+* The function draws a square on the game field
+*
+* @param x X coordiate of the cell
+* @param y Y coordiate of the cell
+* @param squares Vector with circle coordinates
+* @param mapOfTheGame Game map with turn data
+* @param turn A toogler of the turn
+* @param sendX A reference on the used coordinate
+* @param sendX A reference on the used coordinate
+*
+* @return Program exit status
+*/
 void clientDrawSquare(int x, int y, std::vector<std::pair<int, int>>& squares, int mapOfTheGame[3][3], int& turn, int& sendX, int& sendY) {
     if(x < 0 || y < 0) return;
     if(mapOfTheGame[y / 200][x / 200] == 1 || mapOfTheGame[y / 200][x / 200] == 2) {
@@ -102,7 +143,11 @@ void clientDrawSquare(int x, int y, std::vector<std::pair<int, int>>& squares, i
 
 }
 
-
+/**
+* @brief Entry point
+*
+* Execution of the TicTacToe game for a client user starts here.
+*/
 void client()
 {
     sf::RenderWindow window(sf::VideoMode(SCR_WIDTH, SCR_HEIGHT), "TicTacToeClient");

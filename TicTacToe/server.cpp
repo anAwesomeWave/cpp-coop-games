@@ -11,6 +11,15 @@
 
 using namespace sf;
 
+/**
+* @brief Server win check
+*
+* The function checks if the server has won the game.
+*
+* @param mapOfTheGame Game map with turn data
+*
+* @return True - server has won, false - server has not won yet
+*/
 bool isWin(const std::vector<std::vector<int>>& mapOfTheGame) {
     if((mapOfTheGame[0][0] == 1 && mapOfTheGame[0][1] == 1 && mapOfTheGame[0][2] == 1) ||
        (mapOfTheGame[1][0] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[1][2] == 1) ||
@@ -25,7 +34,15 @@ bool isWin(const std::vector<std::vector<int>>& mapOfTheGame) {
     return false;
 }
 
-
+/**
+* @brief Drawing a map
+*
+* The function draws a map that is used during the game.
+*
+* @param window A reference on game field
+* @param y_block_ez Size of the field cell vertical side
+* @param x_block_ez Size of the field cell horizontal side
+*/
 void drawMap(RenderWindow& window, int y_block_sz, int x_block_sz) {
     int windowH = window.getSize().y;
     int windowW = window.getSize().x;
@@ -47,7 +64,17 @@ void drawMap(RenderWindow& window, int y_block_sz, int x_block_sz) {
     }
 }
 
-
+/**
+* @brief Drawing a circle or a cross
+* The function draws a circle or a cross depending on the turn
+*
+* @param mapOfTheGame Game map with turn data
+* @param window A reference on game field
+* @param texture1 A cross texture
+* @param texture1 A circle texture
+* @param y_size A vertical size of an pasting input
+* @param x_size A horizontal size of an pasting input
+*/
 void drawObjects(const std::vector<std::vector<int>>& mapOfTheGame, RenderWindow& window, Texture& texture1, Texture& texture2, int y_size, int x_size) {
     for (int y_ind = 0; y_ind < mapOfTheGame.size(); y_ind++) {
         for (int x_ind = 0; x_ind < mapOfTheGame[x_ind].size(); x_ind++) {
@@ -65,7 +92,19 @@ void drawObjects(const std::vector<std::vector<int>>& mapOfTheGame, RenderWindow
     }
 }
 
-
+/**
+* @brief Click treatment
+* The function treats a mouse click depending of turn parity
+*
+* @param x X coordinate of click
+* @param y Y coordinate of click
+* @param x_div Horizontal size of a field cell
+* @param y_div Vertical size of a field cell
+* @param turn Number of turn to pick a texture
+* @param mapOfTheGame Game map with turn data
+*
+* @return Program exit status
+*/
 int processCLick(int x, int y, int x_div, int y_div, int turn, std::vector<std::vector<int>>& mapOfTheGame) {
     if (x < 0 || y < 0 || mapOfTheGame[y / y_div][x / x_div] != 0){
         return 1;
@@ -76,7 +115,17 @@ int processCLick(int x, int y, int x_div, int y_div, int turn, std::vector<std::
     return 0;
 }
 
-
+/**
+* @brief Creating a game window
+* The function creates a game server window
+*
+* @param window A reference on game field
+* @param w_width Window width
+* @param w_height Window height
+* @param name Name of tha game window.
+*
+* @return Program exit status
+*/
 int setUpWindow(RenderWindow& window, int w_width, int w_height, std::string name) {
     // field is 3x3 and sprit will be placed at first quarter of each block
     if (w_width % 12 != 0 || w_height % 12 != 0) {
@@ -86,7 +135,11 @@ int setUpWindow(RenderWindow& window, int w_width, int w_height, std::string nam
     return 0;
 }
 
-
+/**
+* @brief Entry point
+*
+* Execution of the TicTacToe game for a server user starts here.
+*/
 void server(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
 {
     sf::RenderWindow window;
