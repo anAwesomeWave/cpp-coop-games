@@ -1,3 +1,9 @@
+/*! \file client.h
+    \brief A Documented file.
+    
+    Details.
+*/
+
 #pragma once
 
 #include <SFML/Graphics.hpp>
