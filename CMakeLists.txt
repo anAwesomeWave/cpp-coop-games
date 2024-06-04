@@ -10,6 +10,7 @@ project("Coop Games" CXX)
 #include(cmake/CompilerWarnings.cmake)
 #set_project_warnings(default)
 
+# file(COPY TicTacToe/data DESTINATION ${CMAKE_BINARY_DIR})
 enable_testing()
 add_subdirectory(external/doctest)
 add_subdirectory(TicTacToe)

@@ -10,14 +10,14 @@
 using namespace sf;
 
 bool isWin(const std::vector<std::vector<int>>& mapOfTheGame) {
-    if((mapOfTheGame[0][0] == 1 && mapOfTheGame[0][1] == 1 && mapOfTheGame[0][2]) ||
-       (mapOfTheGame[1][0] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[1][2]) ||
-       (mapOfTheGame[2][0] == 1 && mapOfTheGame[2][1] == 1 && mapOfTheGame[2][2]) ||
-       (mapOfTheGame[0][0] == 1 && mapOfTheGame[1][0] == 1 && mapOfTheGame[2][0]) ||
-       (mapOfTheGame[0][1] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[2][1]) ||
-       (mapOfTheGame[0][2] == 1 && mapOfTheGame[1][2] == 1 && mapOfTheGame[2][2]) ||
-       (mapOfTheGame[0][0] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[2][2]) ||
-       (mapOfTheGame[0][2] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[2][0])) {
+    if((mapOfTheGame[0][0] == 1 && mapOfTheGame[0][1] == 1 && mapOfTheGame[0][2] == 1) ||
+       (mapOfTheGame[1][0] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[1][2] == 1) ||
+       (mapOfTheGame[2][0] == 1 && mapOfTheGame[2][1] == 1 && mapOfTheGame[2][2] == 1) ||
+       (mapOfTheGame[0][0] == 1 && mapOfTheGame[1][0] == 1 && mapOfTheGame[2][0] == 1) ||
+       (mapOfTheGame[0][1] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[2][1] == 1) ||
+       (mapOfTheGame[0][2] == 1 && mapOfTheGame[1][2] == 1 && mapOfTheGame[2][2] == 1) ||
+       (mapOfTheGame[0][0] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[2][2] == 1) ||
+       (mapOfTheGame[0][2] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[2][0] == 1)) {
         return true;
     }
     return false;
@@ -39,21 +39,18 @@ void drawMap(RenderWindow& window) {
     }
 }
 
-void drawCircle(
+int drawCircle(
         int x,
         int y,
         std::vector<std::pair<int, int>>& balls,
         std::vector<std::vector<int>>& mapOfTheGame,
-        int turn,
-        int sendX,
-        int sendY
+        int& sendX,
+        int& sendY
 ){
-    if(x < 0 || y < 0) return;
-
-    if(mapOfTheGame[y / 200][x / 200] == 1 || mapOfTheGame[y / 200][x / 200] == 2){
+    if(x < 0 || y < 0 || mapOfTheGame[y / 200][x / 200] == 1 || mapOfTheGame[y / 200][x / 200] == 2){
         sendX = -1;
         sendY = -1;
-        return;
+        return 1;
     }
     if(x < 200) {
         if(y < 200) {
@@ -82,7 +79,7 @@ void drawCircle(
     }
     mapOfTheGame[y / 200][x / 200] = 1;
     sendX = x; sendY = y;
-    turn = 1;
+    return 0;
 }
 
 void drawSquare(int x, int y, std::vector<std::pair<int, int>>& squares) {
@@ -150,7 +147,7 @@ void server()
         timer += clock.getElapsedTime();
         clock.restart();
         ///END_OF_THE_GAME///
-        if(isServerWin || isClientWin) {
+        if (isServerWin || isClientWin) {
             while(window.isOpen()) {
                 Font font;
                 font.loadFromFile(FONT);
@@ -173,14 +170,17 @@ void server()
                 window.draw(text);
                 window.display();
                 }
-            }
+        }
+
         while (window.pollEvent(event)){
             if (event.type == Event::Closed) {
                 window.close();
             }
-            if(event.type == Event::MouseButtonPressed) {
-                if(event.key.code == Mouse::Left && turn == 0 && !isServerWin && !isClientWin) {
-                    drawCircle(Mouse::getPosition(window).x, Mouse::getPosition(window).y, balls, mapOfTheGame, turn, sendX, sendY);
+            if (event.type == Event::MouseButtonPressed) {
+                if (event.key.code == Mouse::Left && turn == 0 && !isServerWin && !isClientWin) {
+                    if (drawCircle(Mouse::getPosition(window).x, Mouse::getPosition(window).y, balls, mapOfTheGame, sendX, sendY) == 0) {
+                        turn = 1;
+                    }
                     isServerWin = isWin(mapOfTheGame);
                     if(timer.asSeconds() >= DELAY) {
                         timer = Time::Zero;
@@ -196,20 +196,20 @@ void server()
         IpAddress senderIp;
         unsigned short senderPort;
 
-        if(socket.receive(packet, senderIp, senderPort) == Socket::Status::Done) {
+        if (socket.receive(packet, senderIp, senderPort) == Socket::Status::Done) {
             int senderX, senderY;
             packet >> senderX >> senderY >> turn >> isClientWin;
             mapOfTheGame[senderY / 200][senderX / 200] = 2;
             drawSquare(senderX, senderY, squares);
         }
 
-        for(auto i : balls) {
+        for (const auto& i : balls) {
             Sprite s;
             s.setTexture(texture1);
             s.setPosition({i.first, i.second});
             window.draw(s);
         }
-        for(auto i : squares) {
+        for (const auto& i : squares) {
             Sprite s;
             s.setTexture(texture2);
             s.setPosition({i.first, i.second});

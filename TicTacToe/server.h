@@ -10,6 +10,6 @@ void drawMap(sf::RenderWindow &);
 
 bool isWin(const std::vector<std::vector<int>> &mapOfTheGame);
 
-void drawCircle(int, int, std::vector<std::pair<int, int>>&, std::vector<std::vector<int>>& , int, int, int);
+int drawCircle(int, int, std::vector<std::pair<int, int>>&, std::vector<std::vector<int>>& , int&, int&);
 
 void drawSquare(int, int, std::vector <std::pair<int, int>> &);

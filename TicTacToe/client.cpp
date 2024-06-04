@@ -7,14 +7,14 @@
 using namespace sf;
 
 void isCWin(bool& isClientWin, int mapOfTheGame[3][3]){
-    if((mapOfTheGame[0][0] == 2 && mapOfTheGame[0][1] == 2 && mapOfTheGame[0][2]) ||
-       (mapOfTheGame[1][0] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[1][2]) ||
-       (mapOfTheGame[2][0] == 2 && mapOfTheGame[2][1] == 2 && mapOfTheGame[2][2]) ||
-       (mapOfTheGame[0][0] == 2 && mapOfTheGame[1][0] == 2 && mapOfTheGame[2][0]) ||
-       (mapOfTheGame[0][1] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[2][1]) ||
-       (mapOfTheGame[0][2] == 2 && mapOfTheGame[1][2] == 2 && mapOfTheGame[2][2]) ||
-       (mapOfTheGame[0][0] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[2][2]) ||
-       (mapOfTheGame[0][2] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[2][0])) {
+    if((mapOfTheGame[0][0] == 2 && mapOfTheGame[0][1] == 2 && mapOfTheGame[0][2] == 2) ||
+       (mapOfTheGame[1][0] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[1][2] == 2) ||
+       (mapOfTheGame[2][0] == 2 && mapOfTheGame[2][1] == 2 && mapOfTheGame[2][2] == 2) ||
+       (mapOfTheGame[0][0] == 2 && mapOfTheGame[1][0] == 2 && mapOfTheGame[2][0] == 2) ||
+       (mapOfTheGame[0][1] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[2][1] == 2) ||
+       (mapOfTheGame[0][2] == 2 && mapOfTheGame[1][2] == 2 && mapOfTheGame[2][2] == 2) ||
+       (mapOfTheGame[0][0] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[2][2] == 2) ||
+       (mapOfTheGame[0][2] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[2][0] == 2)) {
             isClientWin = true;
     }
 }

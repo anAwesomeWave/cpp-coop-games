@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(TicTacToe)
 
-file(COPY data DESTINATION ${CMAKE_BINARY_DIR})
+# file(COPY data DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY data DESTINATION ${CMAKE_BINARY_DIR}/TicTacToe)
 
 add_library(
         TicTacToe_lib
