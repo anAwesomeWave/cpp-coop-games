@@ -9,7 +9,7 @@ int main()
     std::cin >> typeOfConnection;
     if(typeOfConnection == 's') {
     	// server's logic
-    	server();
+    	server(55001, "127.0.0.1", 55002);
     } else if(typeOfConnection == 'c') {
     	// client's logic
     	client();
