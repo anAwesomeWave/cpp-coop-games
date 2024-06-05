@@ -94,14 +94,14 @@ void drawObjects(const std::vector<std::vector<int>>& mapOfTheGame, RenderWindow
 
 /**
 * @brief Click treatment
-* The function treats a mouse click depending of turn parity
+* Set value of the cell of the mapOfTheGame parameter depending on the x, y position of Mouse and turn parity.
 *
 * @param x X coordinate of click
 * @param y Y coordinate of click
 * @param x_div Horizontal size of a field cell
 * @param y_div Vertical size of a field cell
-* @param turn Number of turn to pick a texture
-* @param mapOfTheGame Game map with turn data
+* @param turn Number of turn to pick a texture [0 - server, 1 - client]
+* @param mapOfTheGame Game map with turn data.
 *
 * @return Program exit status
 */
@@ -117,7 +117,8 @@ int processCLick(int x, int y, int x_div, int y_div, int turn, std::vector<std::
 
 /**
 * @brief Creating a game window
-* The function creates a game server window
+* The function creates a game server window. If the provided width and height of a window is not
+* divisible by 12 return an error code 1.
 *
 * @param window A reference on game field
 * @param w_width Window width
@@ -139,6 +140,10 @@ int setUpWindow(RenderWindow& window, int w_width, int w_height, std::string nam
 * @brief Entry point
 *
 * Execution of the TicTacToe game for a server user starts here.
+*
+* @param port Port of the server
+* @param opponent_ip String representin an IP addr. of the opponent.
+* @param opponent_port Port of the opponent
 */
 void server(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
 {

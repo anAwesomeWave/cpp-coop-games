@@ -5,6 +5,12 @@
 #include <cstdint>
 #include <string>
 
+/*! \file server.h
+    \brief A Documented file.
+    
+    Server side logic of the TicTacToe.
+*/
+
 
 void server(uint16_t port, std::string&& o_ip, uint16_t o_port);
 
