@@ -105,7 +105,7 @@ void drawObjects(const std::vector<std::vector<int>>& mapOfTheGame, RenderWindow
 *
 * @return Program exit status
 */
-int processCLick(int x, int y, int x_div, int y_div, int turn, std::vector<std::vector<int>>& mapOfTheGame) {
+int processClick(int x, int y, int x_div, int y_div, int turn, std::vector<std::vector<int>>& mapOfTheGame) {
     if (x < 0 || y < 0 || mapOfTheGame[y / y_div][x / x_div] != 0){
         return 1;
     }
@@ -215,7 +215,7 @@ void server(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
             }
             if (event.type == Event::MouseButtonPressed) {
                 if (event.key.code == Mouse::Left && turn == 0 && !isServerWin && !isClientWin) {
-                    if (processCLick(Mouse::getPosition(window).x, Mouse::getPosition(window).y, x_block_size, y_block_size, turn, mapOfTheGame) == 0) {
+                    if (processClick(Mouse::getPosition(window).x, Mouse::getPosition(window).y, x_block_size, y_block_size, turn, mapOfTheGame) == 0) {
                         turn = 1;
                         sendX = Mouse::getPosition(window).x;
                         sendY = Mouse::getPosition(window).y;
@@ -238,7 +238,7 @@ void server(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
         if (socket.receive(packet, senderIp, senderPort) == Socket::Status::Done) {
             int senderX, senderY;
             packet >> senderX >> senderY >> turn >> isClientWin;
-            processCLick(
+            processClick(
                 senderX,
                 senderY,
                 x_block_size,

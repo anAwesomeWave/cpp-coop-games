@@ -28,6 +28,6 @@ void drawObjects(
 );
 
 
-int processCLick(int x, int y, int x_div, int y_div, int turn, std::vector<std::vector<int>>& mapOfTheGame);
+int processClick(int x, int y, int x_div, int y_div, int turn, std::vector<std::vector<int>>& mapOfTheGame);
 
 int setUpWindow(sf::RenderWindow& window, int w_width, int w_height, std::string name);
