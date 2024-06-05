@@ -18,6 +18,7 @@ void Player::setDir(int n) {
 
     dir = n % 4; // 0 1 2 3
 }
+
 int Player::getDir(){
     return dir;
 }

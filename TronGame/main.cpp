@@ -1,3 +1,10 @@
+/*! \file main.cpp
+\brief A Documented file.
+
+    Details.
+*/
+
+
 #include <SFML/Graphics.hpp>
 #include <ctime>
 #include <cstdlib>
@@ -8,6 +15,13 @@ using namespace sf;
 
 int field[SCR_HEIGHT + 1][SCR_WIDTH + 1] = {0};
 
+/**
+* @brief Entry point
+*
+* Execution of the TicTacToe game program starts here.
+*
+* @return Program exit status
+*/
 int main() {
     srand(time(NULL));
     RenderWindow window({SCR_WIDTH, SCR_HEIGHT}, "Tron Game");
