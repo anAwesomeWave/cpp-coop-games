@@ -19,14 +19,14 @@ void Player::setDir(int n) {
     dir = n % 4; // 0 1 2 3
 }
 
-int Player::getDir(){
+int Player::getDir() const {
     return dir;
 }
 
-float Player::getX() {
+float Player::getX() const {
     return x;
 }
-float Player::getY() {
+float Player::getY() const {
     return y;
 }
 

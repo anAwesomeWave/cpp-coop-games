@@ -71,7 +71,7 @@ public:
     *
     * @return A direction number.
     */
-    int getDir();
+    int getDir() const;
 
     /**
     * @brief Returning a horizontal coordinate
@@ -80,7 +80,7 @@ public:
     *
     * @return A horizontal coordinate.
     */
-    float getX();
+    float getX() const;
 
     /**
     * @brief Returning a vertical coordinate
@@ -89,5 +89,5 @@ public:
     *
     * @return A hvertical coordinate.
     */
-    float getY();
+    float getY() const;
 };

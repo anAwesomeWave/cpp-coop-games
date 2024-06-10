@@ -1,14 +1,49 @@
 #include <SFML/Graphics.hpp>
+#include <cmath>
+#include <vector>
 #include <ctime>
 #include <cstdlib>
 #include "player.hpp"
 #include "settings.hpp"
 
 using namespace sf;
+using std::vector;
 
-int field[SCR_HEIGHT + 1][SCR_WIDTH + 1] = {0};
+
+
+int endOfGame(const Player& p1, const Player& p2, vector<vector<int>>& field) {
+    // 1 - player1 lose , 2- player 2, 0 - nobody
+    if ((field[int(p1.getY())][int(p1.getX())] == 1 && p1.getDir() != -1) ||
+        field[int(p1.getY())][int(p1.getX())] == 2
+    ) {
+            return 1;
+    }
+    if ((field[int(p2.getY())][int(p2.getX())] == 2 && p2.getDir() != -1) ||
+        field[int(p2.getY())][int(p2.getX())] == 1
+    ) {
+            return 2;
+    }
+    return 0;
+}
+
+void handleEndOfGame(RenderWindow& window, int whoLose) {
+    Font font;
+    font.loadFromFile(FONT);
+    Text text;
+    text.setFont(font);
+    text.setPosition({SCR_WIDTH / 2 - 200, 100});
+    if(whoLose == 1) {
+        text.setFillColor(Color::Green);
+    } else {
+        text.setFillColor(Color::Blue);
+    }
+    text.setString("You win!");
+    window.draw(text);
+}
 
 int gameLoop() {
+
+    vector<vector<int>> field(SCR_HEIGHT + 1, vector<int>(SCR_WIDTH + 1, 0));
     srand(time(NULL));
     RenderWindow window({SCR_WIDTH, SCR_HEIGHT}, "Tron Game");
     Player player2(rand() % SCR_WIDTH, rand() % SCR_HEIGHT, {0, 255, 0});
@@ -57,31 +92,19 @@ int gameLoop() {
         window.draw(bgSprite);
 
         if(game) {
-
             if(timer.asSeconds() >= DELAY) {
                 player1.move();
                 player2.move();
-                if((field[int(player1.getY())][int(player1.getX())] == 1 && player1.getDir() != -1) ||
-                    field[int(player1.getY())][int(player1.getX())] == 2) {game = false; whoLose = 1;}
-                if((field[int(player2.getY())][int(player2.getX())] == 2 && player2.getDir() != -1) ||
-                    field[int(player2.getY())][int(player2.getX())] == 1) {game = false; whoLose = 2;}
+                whoLose = endOfGame(player1,player2, field);
+                if (whoLose) {
+                    game = false;
+                }
                 field[int(player1.getY())][int(player1.getX())] = 1;
                 field[int(player2.getY())][int(player2.getX())] = 2;
                 timer = sf::seconds(0.f);
             }
         } else {
-            Font font;
-            font.loadFromFile(FONT);
-            Text text;
-            text.setFont(font);
-            text.setPosition({SCR_WIDTH / 2 - 200, 100});
-            if(whoLose == 1) {
-                text.setFillColor(Color::Green);
-            } else {
-                text.setFillColor(Color::Blue);
-            }
-            text.setString("You win!");
-            window.draw(text);
+            handleEndOfGame(window, whoLose);
         }
         for(int i = 0; i <= SCR_HEIGHT; i ++) {
             for(int j = 0; j <= SCR_WIDTH; j ++) {
