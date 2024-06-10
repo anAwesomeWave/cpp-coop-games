@@ -79,7 +79,7 @@ void drawObjects(
 *
 * @return Program exit status
 */
-int processCLick(int x, int y, int x_div, int y_div, int turn, std::vector<std::vector<int>>& mapOfTheGame);
+int processClick(int x, int y, int x_div, int y_div, int turn, std::vector<std::vector<int>>& mapOfTheGame);
 
 
 /**
