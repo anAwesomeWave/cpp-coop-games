@@ -1,9 +1,14 @@
+/*! \file main.cpp
+\brief A Documented file.
+
+	Details.
+*/
+
 #include <iostream>
 #include "server.h"
 #include "client.h"
 
 
-int main()
 /**
 * @brief Entry point
 *
@@ -11,6 +16,7 @@ int main()
 *
 * @return Program exit status
 */
+int main()
 {
     char typeOfConnection;
     std::cout << "Enter type of connection. ";
