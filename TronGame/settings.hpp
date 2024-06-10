@@ -5,5 +5,5 @@
 
 #define DELAY 0.01
 
-#define BG_IMAGE "data/images/background.jpg"
-#define FONT "data/gameFont.ttf"
+#define BG_IMAGE "tronData/images/background.jpg"
+#define FONT "tronData/gameFont.ttf"

@@ -14,7 +14,6 @@ add_library(
 )
 add_executable(TicTacToe
         main.cpp
-
 )
 
 target_link_libraries(
