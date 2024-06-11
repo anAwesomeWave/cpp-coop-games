@@ -15,12 +15,12 @@ enable_testing()
 add_subdirectory(external/doctest)
 add_subdirectory(TicTacToe)
 add_subdirectory(TronGame)
-add_executable(COOPGAMES
+add_executable(coop-games
     main.cpp
 )
 
 target_link_libraries(
-    COOPGAMES
+    coop-games
     PUBLIC
     TicTacToe_lib
     Tron_lib
