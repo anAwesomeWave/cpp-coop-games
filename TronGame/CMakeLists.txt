@@ -1,11 +1,10 @@
-cmake_minimum_required(VERSION 3.5)
+# cmake_minimum_required(VERSION 3.5)
 
-project(TronGame)
+# project(TronGame)
 
 file(COPY tronData DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY tronData DESTINATION ${CMAKE_BINARY_DIR}/TronGame)
 
-enable_testing()
 
 add_library(
         Tron_lib
@@ -21,6 +20,24 @@ add_executable(Tron
 target_link_libraries(
         Tron
         PRIVATE
+        Tron_lib
+        sfml-graphics
+        sfml-window
+        sfml-system
+        sfml-network
+)
+
+enable_testing()
+
+add_executable(
+        ctest-tron
+        tests.cpp
+)
+
+target_link_libraries(
+        ctest-tron
+        PUBLIC
+        doctest
         Tron_lib
         sfml-graphics
         sfml-window

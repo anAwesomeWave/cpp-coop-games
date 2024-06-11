@@ -1,8 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include <cmath>
-#include <vector>
-#include <ctime>
-#include <cstdlib>
 #include "player.hpp"
 #include "settings.hpp"
 

@@ -1,9 +1,6 @@
-#include <cstdint>
 #include <iostream>
 #include <sys/types.h>
 #include <vector>
-#include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
 
 #include "settings.hpp"
 #include "server.h"
