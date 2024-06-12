@@ -5,7 +5,7 @@
 
 #include "game.h"
 #include "player.hpp"
-
+#include "settings.hpp"
 
 using std::vector;
 
@@ -45,4 +45,42 @@ TEST_CASE("endOfGame error handling")
     field[5][5] = 2;
     CHECK(endOfGame(p1, p2, field) != 0); // сам в себя
 
+}
+
+
+TEST_CASE("PLAYER's move handling") {
+    Player p(1, 1, sf::Color::Green, 1, 3);
+
+    p.setDir(2);
+
+    p.move();
+
+    CHECK(p.getX() == 4);
+
+    p.setDir(3);
+
+    p.setSpeed(1);
+
+    p.move();
+    CHECK(p.getSpeed() == 1);
+    CHECK(p.getDir() == 3);
+    CHECK(p.getX() == 4);
+    CHECK(p.getY() == 2);
+}
+
+TEST_CASE("PLAYER's move invalid position handling") {
+    Player p(0, 0, sf::Color::Green, 1, 0);
+
+
+    p.move();
+    
+    // dir set to 0 => nothing happens after calling "move"
+    CHECK(p.getX() == 0);
+    CHECK(p.getY() == 0);
+
+    p.setDir(1);
+    p.move();
+
+    CHECK(p.getX() == 0);
+    CHECK(p.getY() == SCR_HEIGHT - 1);
 }

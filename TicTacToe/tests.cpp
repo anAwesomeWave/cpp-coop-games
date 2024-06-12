@@ -4,15 +4,6 @@
 #include <vector>
 
 
-TEST_CASE("check tests")
-{
-//    template <typename T>
-//    using v<T> = std::vector<T>;
-    CHECK(1 == 1);
-
-//    v<v<int>> emptyMap;
-}
-
 TEST_CASE("CHECK SERVER isWin")
 {
     std::vector<std::vector<int>> map(3, std::vector<int>(3));

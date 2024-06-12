@@ -42,8 +42,8 @@ int gameLoop() {
     vector<vector<int>> field(SCR_HEIGHT + 1, vector<int>(SCR_WIDTH + 1, 0));
     srand(time(NULL));
     RenderWindow window({SCR_WIDTH, SCR_HEIGHT}, "Tron Game");
-    Player player2(rand() % SCR_WIDTH, rand() % SCR_HEIGHT, {0, 255, 0});
-    Player player1(rand() % SCR_WIDTH, rand() % SCR_HEIGHT, {0, 0, 255});
+    Player player2(rand() % SCR_WIDTH, rand() % SCR_HEIGHT, {0, 255, 0}, 2);
+    Player player1(rand() % SCR_WIDTH, rand() % SCR_HEIGHT, {0, 0, 255}, 2);
     Clock clock;
     Time timer;
 
@@ -108,7 +108,7 @@ int gameLoop() {
                     CircleShape c;
                     c.setOrigin(2, 2);
                     c.setPosition({j, i});
-                    c.setRadius(1);
+                    c.setRadius(player1.getRadius());
                     c.setFillColor({0, 0, 255});
                     window.draw(c);
                 }
@@ -116,7 +116,7 @@ int gameLoop() {
                     CircleShape c;
                     c.setOrigin(2, 2);
                     c.setPosition({j, i});
-                    c.setRadius(1);
+                    c.setRadius(player2.getRadius());
                     c.setFillColor({0, 255, 0});
                     window.draw(c);
                 }

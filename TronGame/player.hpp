@@ -36,8 +36,10 @@ public:
     * @param X X coordinate
     * @param Y Y coordinate
     * @param color A color of the player
+    * @param rad Radius of the player
+    * @param speed Speed of the player
     */
-    Player(float X, float Y, sf::Color color);
+    Player(float X, float Y, sf::Color color, int rad=1, int speed=1);
 
     /**
     * @brief Changing coordinates
@@ -90,4 +92,31 @@ public:
     * @return A hvertical coordinate.
     */
     float getY() const;
+
+    /**
+    * @brief Returns a direction
+    *
+    * The function returns radius.
+    *
+    * @return radius field.
+    */
+    int getRadius() const;
+
+    /**
+    * @brief Changing speed
+    *
+    * The function changes a spped.
+    *
+    * @param speed current speed {1, 2, 3, ...}.
+    */
+    void setSpeed(int speed);
+
+    /**
+    * @brief Returns a speed
+    *
+    * The function returns speed.
+    *
+    * @return speed field.
+    */
+    int getSpeed() const;
 };
