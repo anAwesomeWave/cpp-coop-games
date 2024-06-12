@@ -15,17 +15,28 @@
 *
 * The function checks if the client has won the game.
 *
-* @param isClientWin Reference on the boolean variable of the client's win
 * @param mapOfTheGame Game map with turn data
 */
-void isCWin(bool&, int[3][3]);
-
+bool isCWin(const std::vector<std::vector<int>>&);
+/**
+* @brief Creating a window
+*
+* The function creates a window that will be used in gmae by the client.
+*
+* @param window Reference on the window that is used to draw the map
+* @param w_width Window width
+* @param w_heigth Window height
+* @param w_name Name that will be given to the window
+*/
+int setUpCWindow(sf::RenderWindow&, int, int, std::string);
 /**
 * @brief Drawing a field
 *
 * The function draws a field in real time.
 *
 * @param window Reference on the window that is used to draw the map
+*
+* @return Program exit status
 */
 void clientDrawMap(sf::RenderWindow&);
 
@@ -57,12 +68,12 @@ void clientDrawCircle(int, int, std::vector<std::pair<int, int>>&);
 *
 * @return Program exit status
 */
-void clientDrawSquare(int, int, std::vector<std::pair<int, int>>&, int[3][3], int&, int&, int&);
+bool clientDrawSquare(int, int, std::vector<std::pair<int, int>>&, const std::vector<std::vector<int>>&, int&, int&, int&);
 
 /**
 * @brief Entry point
 *
 * Execution of the TicTacToe game for a client user starts here.
 */
-void client();
+void client(uint16_t, std::string&&, uint16_t);
 

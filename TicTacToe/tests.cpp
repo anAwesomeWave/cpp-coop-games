@@ -1,4 +1,5 @@
 #include "server.h"
+#include "client.h"
 #include <algorithm>
 #include <doctest.h>
 #include <vector>
@@ -85,4 +86,67 @@ TEST_CASE("CHECK SERVER setUpWindow invalid size function") {
     CHECK(setUpWindow(window, 120, 119, "test") == 1);
     CHECK(window.getSize().x == 0);
     CHECK(window.getSize().y == 0);
+}
+
+TEST_CASE("CHECK CLIENT isCWin")
+{
+    std::vector<std::vector<int>> map(3, std::vector<int>(3));
+    CHECK(isCWin(map) == false);
+    for (int i = 0; i < 3; i++) {
+        map[i][0] = 2;
+    }
+    CHECK(isCWin(map) == true);
+    map[0][0] = 0;
+    CHECK(isCWin(map) == false);
+    for (int i = 0; i < 3; i++) {
+        map[i][0] = 0;
+        map[0][i] = 2;
+    }
+    CHECK(isCWin(map) == true);
+}
+
+
+TEST_CASE("CHECK CLIENT clientDrawCircle")
+{
+    std::vector<std::pair<int, int>> balls;
+    clientDrawCircle(300, 210, balls);
+    CHECK(balls[0].first == 250);
+    CHECK(balls[0].second == 250);
+    clientDrawCircle(0, 0, balls);
+    CHECK(balls[1].first == 50);
+    CHECK(balls[1].second == 50);
+    clientDrawCircle(500, 0, balls);
+    CHECK(balls[2].first == 450);
+    CHECK(balls[2].second == 50);
+}
+
+TEST_CASE("CHECK CLIENT clientDrawSquare")
+{
+    std::vector<std::vector<int>> map(3, std::vector<int>(3));
+    std::vector<std::pair<int, int>> squares;
+    int turn = 0;
+    int x = -1;
+    int y = -1;
+    clientDrawSquare(300, 210, squares, map, turn, x, y);
+    CHECK((squares[0].first) == 250);
+    CHECK((squares[0].second) == 250);
+    clientDrawSquare(0, 0, squares, map, turn, x, y);
+    CHECK((squares[1].first) != 250);
+    CHECK((squares[1].second) != 250);
+    clientDrawSquare(500, 0, squares, map, turn, x, y);
+    CHECK((squares[2].first) == 450);
+    CHECK((squares[2].second) == 50);
+}
+
+TEST_CASE("CHECK CLIENT clientDrawSquare draw in used cell")
+{
+    std::vector<std::vector<int>> map(3, std::vector<int>(3));
+    std::vector<std::pair<int, int>> squares;
+    int turn = 0;
+    int send_x = -1; int send_y = -1;
+    int x = 300; int y = 210;
+    if (clientDrawSquare(x, y, squares, map, turn, send_x, send_y) == true) {map[x / 200][y / 200] = 2;}
+    CHECK(squares[0].first == 250);
+    CHECK(clientDrawSquare(280, 240, squares, map, turn, x, y) == false);
+    CHECK(clientDrawSquare(420, 240, squares, map, turn, x, y) == true);
 }

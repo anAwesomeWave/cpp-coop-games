@@ -6,7 +6,7 @@
 
 using namespace sf;
 
-void isCWin(bool& isClientWin, int mapOfTheGame[3][3]){
+bool isCWin(const std::vector<std::vector<int>>& mapOfTheGame){
     if((mapOfTheGame[0][0] == 2 && mapOfTheGame[0][1] == 2 && mapOfTheGame[0][2] == 2) ||
        (mapOfTheGame[1][0] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[1][2] == 2) ||
        (mapOfTheGame[2][0] == 2 && mapOfTheGame[2][1] == 2 && mapOfTheGame[2][2] == 2) ||
@@ -15,8 +15,9 @@ void isCWin(bool& isClientWin, int mapOfTheGame[3][3]){
        (mapOfTheGame[0][2] == 2 && mapOfTheGame[1][2] == 2 && mapOfTheGame[2][2] == 2) ||
        (mapOfTheGame[0][0] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[2][2] == 2) ||
        (mapOfTheGame[0][2] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[2][0] == 2)) {
-            isClientWin = true;
+            return true;
     }
+	return false;
 }
 
 void clientDrawMap(RenderWindow& window) {
@@ -63,13 +64,13 @@ void clientDrawCircle(int x, int y, std::vector<std::pair<int, int>>& balls) {
     }
 }
 
-void clientDrawSquare(int x, int y, std::vector<std::pair<int, int>>& squares, int mapOfTheGame[3][3], int& turn, int& sendX, int& sendY) {
-    if(x < 0 || y < 0) return;
+bool clientDrawSquare(int x, int y, std::vector<std::pair<int, int>>& squares, const std::vector<std::vector<int>>& mapOfTheGame, int& turn, int& sendX, int& sendY) {
+    if(x < 0 || y < 0) return false;
     if(mapOfTheGame[y / 200][x / 200] == 1 || mapOfTheGame[y / 200][x / 200] == 2) {
         sendX = -1;
         sendY = -1;
         turn = 1;
-        return;
+        return false;
     }
     if(x < 200) {
         if(y < 200) {
@@ -96,29 +97,38 @@ void clientDrawSquare(int x, int y, std::vector<std::pair<int, int>>& squares, i
             squares.push_back({450, 450});
         }
     }
-    mapOfTheGame[y / 200][x / 200] = 2;
+    // mapOfTheGame[y / 200][x / 200] = 2;
     sendX = x; sendY = y;
     turn = 0;
-
+	return true;
 }
 
-void client()
+int setUpCWindow(RenderWindow& window, int w_width, int w_height, std::string w_name) {
+    if (w_width % 12 != 0 || w_height % 12 != 0) {
+        return 1;
+    }
+    window.create(VideoMode(w_width, w_height), w_name, Style::Titlebar | Style::Close);
+    return 0;
+}
+
+void client(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
 {
-    sf::RenderWindow window(sf::VideoMode(SCR_WIDTH, SCR_HEIGHT), "TicTacToeClient");
+	sf::RenderWindow window;
+    setUpCWindow(window, SCR_WIDTH, SCR_HEIGHT, "TicTacToeClient");
 
     std::vector<std::pair<int, int>> balls;
     std::vector<std::pair<int, int>> squares;
     Texture texture1, texture2;
     texture1.loadFromFile(O_TEXTURE);
     texture2.loadFromFile(X_TEXTURE);
-    int turn = 0; // 0 - server, 1 - clinet
-    int mapOfTheGame[3][3] = {0};
+    int turn = 0; // 0 - server, 1 - client
+    std::vector<std::vector<int>> mapOfTheGame(3, std::vector<int>(3));
 
     bool isServerWin = false;
     bool isClientWin = false;
 
     UdpSocket socket;
-    socket.bind(55002);
+    socket.bind(port);
     socket.setBlocking(false);
 
     Clock clock;
@@ -164,14 +174,20 @@ void client()
             }
             if(event.type == Event::MouseButtonPressed) {
                 if(event.key.code == Mouse::Left && turn && !isServerWin && !isClientWin) {
-                    clientDrawSquare(Mouse::getPosition(window).x, Mouse::getPosition(window).y, squares, mapOfTheGame, turn, sendX, sendY);
+					int x = Mouse::getPosition(window).x;
+					int y = Mouse::getPosition(window).y;
+                    if (clientDrawSquare(x, y, squares, mapOfTheGame, turn, sendX, sendY) == true)
+						{
+							mapOfTheGame[x / 200][y / 200] = 2;
+						}
+
                     ///SEND///
-                    isCWin(isClientWin, mapOfTheGame);
+					isClientWin = isCWin(mapOfTheGame);
                     if(timer.asSeconds() >= DELAY) {
                         timer = Time::Zero;
-                        isCWin(isClientWin, mapOfTheGame);
+                        isClientWin = isCWin(mapOfTheGame);
                         packet << sendX << sendY << turn << isClientWin;
-                        socket.send(packet, "127.0.0.1", 55001);
+                        socket.send(packet, opponent_ip, opponent_port);
                     }
                 }
             }

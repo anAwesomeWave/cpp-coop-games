@@ -21,7 +21,7 @@ int main() {
             server(55001, "127.0.0.1", 55002);
         } else if(typeOfConnection == 'c') {
             // client's logic
-            client();
+            client(55002, "127.0.0.1", 55001);
         }
     } else {
         gameLoop();
