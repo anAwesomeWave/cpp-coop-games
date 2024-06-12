@@ -1,5 +1,5 @@
 /*! \file client.h
-    \brief A Documented file.
+    \brief TicTacToe client file
     
     Details.
 */

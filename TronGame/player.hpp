@@ -1,5 +1,5 @@
-/*! \file client.h
-\brief A Documented file.
+/*! \file player.hpp
+\brief Tron player file
 
     Details.
 */

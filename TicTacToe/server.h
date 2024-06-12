@@ -1,15 +1,15 @@
+/*! \file server.h
+    \brief TicTacToe server file
+
+    Server side logic of the TicTacToe.
+*/
+
 #pragma once
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <cstdint>
 #include <string>
-
-/*! \file server.h
-    \brief A Documented file.
-    
-    Server side logic of the TicTacToe.
-*/
 
 /**
 * @brief Entry point

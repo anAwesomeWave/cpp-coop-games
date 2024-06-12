@@ -1,5 +1,5 @@
 /*! \file main.cpp
-\brief A Documented file.
+\brief Tron main file.
 
     Details.
 */
