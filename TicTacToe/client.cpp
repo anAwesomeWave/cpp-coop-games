@@ -4,9 +4,10 @@
 #include <vector>
 #include "settings.hpp"
 
+
 using namespace sf;
 
-bool isCWin(const std::vector<std::vector<int>>& mapOfTheGame){
+bool isCWin(const std::vector<std::vector<int>>& mapOfTheGame) {
     if ((mapOfTheGame[0][0] == 2 && mapOfTheGame[0][1] == 2 && mapOfTheGame[0][2] == 2) ||
        (mapOfTheGame[1][0] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[1][2] == 2) ||
        (mapOfTheGame[2][0] == 2 && mapOfTheGame[2][1] == 2 && mapOfTheGame[2][2] == 2) ||
@@ -16,6 +17,7 @@ bool isCWin(const std::vector<std::vector<int>>& mapOfTheGame){
        (mapOfTheGame[0][0] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[2][2] == 2) ||
        (mapOfTheGame[0][2] == 2 && mapOfTheGame[1][1] == 2 && mapOfTheGame[2][0] == 2)) {
             return true;
+
     }
 	return false;
 }
