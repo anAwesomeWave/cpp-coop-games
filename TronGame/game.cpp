@@ -102,8 +102,8 @@ int gameLoop() {
         } else {
             handleEndOfGame(window, whoLose);
         }
-        for(int i = 0; i <= SCR_HEIGHT; i ++) {
-            for(int j = 0; j <= SCR_WIDTH; j ++) {
+        for(float i = 0; i <= SCR_HEIGHT; i ++) {
+            for(float j = 0; j <= SCR_WIDTH; j ++) {
                 if(field[i][j] == 1) {
                     CircleShape c;
                     c.setOrigin(2, 2);

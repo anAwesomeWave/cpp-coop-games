@@ -143,9 +143,13 @@ TEST_CASE("CHECK CLIENT clientDrawSquare draw in used cell")
     std::vector<std::vector<int>> map(3, std::vector<int>(3));
     std::vector<std::pair<int, int>> squares;
     int turn = 0;
-    int send_x = -1; int send_y = -1;
-    int x = 300; int y = 210;
-    if (clientDrawSquare(x, y, squares, map, turn, send_x, send_y) == true) {map[x / 200][y / 200] = 2;}
+    int send_x = -1;
+    int send_y = -1;
+    int x = 300;
+    int y = 210;
+    if (clientDrawSquare(x, y, squares, map, turn, send_x, send_y) == true) {
+        map[x / 200][y / 200] = 2;
+    }
     CHECK(squares[0].first == 250);
     CHECK(clientDrawSquare(280, 240, squares, map, turn, x, y) == false);
     CHECK(clientDrawSquare(420, 240, squares, map, turn, x, y) == true);

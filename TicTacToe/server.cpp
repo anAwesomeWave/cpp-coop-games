@@ -29,16 +29,16 @@ void drawMap(RenderWindow& window, int y_block_sz, int x_block_sz) {
     for(int x_line = x_block_sz; x_line < windowW; x_line += x_block_sz) {
         RectangleShape rect1;
         rect1.setFillColor({0, 0, 0});
-        rect1.setSize({2, windowH});
-        rect1.setPosition({x_line, 0});
+        rect1.setSize({2, static_cast<float>(windowH)});
+        rect1.setPosition({static_cast<float>(x_line), 0});
         window.draw(rect1);
     }
 
     for(int y_line = y_block_sz; y_line < windowH; y_line += y_block_sz) {
         RectangleShape rect2;
         rect2.setFillColor({0, 0, 0});
-        rect2.setSize({windowW, 2});
-        rect2.setPosition({0, y_line});
+        rect2.setSize({static_cast<float>(windowW), 2});
+        rect2.setPosition({0, static_cast<float>(y_line)});
         window.draw(rect2);
     }
 }
@@ -53,7 +53,7 @@ void drawObjects(const std::vector<std::vector<int>>& mapOfTheGame, RenderWindow
                 } else {
                     s.setTexture(texture2);
                 }
-                s.setPosition({x_ind * x_size + TEXTURE_SHIFT, y_ind * y_size + TEXTURE_SHIFT});
+                s.setPosition({static_cast<float>(x_ind * x_size + TEXTURE_SHIFT), static_cast<float>(y_ind * y_size + TEXTURE_SHIFT)});
                 window.draw(s);
             }
         }
@@ -148,7 +148,7 @@ void server(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
                 window.close();
             }
             if (event.type == Event::MouseButtonPressed) {
-                if (event.key.code == Mouse::Left && turn == 0 && !isServerWin && !isClientWin) {
+                if (event.mouseButton.button == Mouse::Left && turn == 0 && !isServerWin && !isClientWin) {
                     if (processClick(Mouse::getPosition(window).x, Mouse::getPosition(window).y, x_block_size, y_block_size, turn, mapOfTheGame) == 0) {
                         turn = 1;
                         sendX = Mouse::getPosition(window).x;
