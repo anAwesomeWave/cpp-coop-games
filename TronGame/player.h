@@ -1,7 +1,7 @@
 /*! \file player.hpp
 \brief Tron player file
 
-    Details.
+    File that contains player class.
 */
 
 

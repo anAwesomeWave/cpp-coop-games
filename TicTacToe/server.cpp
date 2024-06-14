@@ -2,7 +2,7 @@
 #include <sys/types.h>
 #include <vector>
 
-#include "settings.hpp"
+#include "settings.h"
 #include "server.h"
 
 

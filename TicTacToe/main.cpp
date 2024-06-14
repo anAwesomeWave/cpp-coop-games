@@ -18,9 +18,12 @@
 */
 int main()
 {
+    using std::cin;
+    using std::cout;
+    using std::endl;
     char typeOfConnection;
-    std::cout << "Enter type of connection. ";
-    std::cin >> typeOfConnection;
+    cout << "Enter type of connection. ";
+    cin >> typeOfConnection;
     if (typeOfConnection == 's') {
     	// server's logic
     	server(55001, "127.0.0.1", 55002);
@@ -28,7 +31,7 @@ int main()
     	// client's logic
     	client(55002, "127.0.0.1", 55001);
     } else {
-        std::cout << std::endl << "Incorrect input.";
+        cout << endl << "Incorrect input.";
     }
     return 0;
 }

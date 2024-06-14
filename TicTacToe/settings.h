@@ -1,5 +1,4 @@
-#ifndef SETTINGS_HPP_INCLUDED
-#define SETTINGS_HPP_INCLUDED
+#pragma once
 
 #define SCR_WIDTH 600
 #define SCR_HEIGHT 600
@@ -12,4 +11,3 @@
 
 #define DELAY 0.01
 
-#endif // SETTINGS_HPP_INCLUDED
