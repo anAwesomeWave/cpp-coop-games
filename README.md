@@ -52,7 +52,7 @@ To play Tron Game, press`2`.
 ### TicTacToe
 The server goes first!
 
-### Tron Game aka Slithario
+### Tron Game aka Slither.io
 Play with your friend
 
 Player 1: W - up, A - left, S - down, D - right
