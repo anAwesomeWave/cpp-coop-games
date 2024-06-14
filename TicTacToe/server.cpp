@@ -9,7 +9,7 @@
 using namespace sf;
 
 bool isWin(const std::vector<std::vector<int>>& mapOfTheGame) {
-    if((mapOfTheGame[0][0] == 1 && mapOfTheGame[0][1] == 1 && mapOfTheGame[0][2] == 1) ||
+    if ((mapOfTheGame[0][0] == 1 && mapOfTheGame[0][1] == 1 && mapOfTheGame[0][2] == 1) ||
        (mapOfTheGame[1][0] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[1][2] == 1) ||
        (mapOfTheGame[2][0] == 1 && mapOfTheGame[2][1] == 1 && mapOfTheGame[2][2] == 1) ||
        (mapOfTheGame[0][0] == 1 && mapOfTheGame[1][0] == 1 && mapOfTheGame[2][0] == 1) ||
@@ -26,7 +26,7 @@ void drawMap(RenderWindow& window, int y_block_sz, int x_block_sz) {
     int windowH = window.getSize().y;
     int windowW = window.getSize().x;
     // can test window.getSize after calling this func
-    for(int x_line = x_block_sz; x_line < windowW; x_line += x_block_sz) {
+    for (int x_line = x_block_sz; x_line < windowW; x_line += x_block_sz) {
         RectangleShape rect1;
         rect1.setFillColor({0, 0, 0});
         rect1.setSize({2, static_cast<float>(windowH)});
@@ -34,7 +34,7 @@ void drawMap(RenderWindow& window, int y_block_sz, int x_block_sz) {
         window.draw(rect1);
     }
 
-    for(int y_line = y_block_sz; y_line < windowH; y_line += y_block_sz) {
+    for (int y_line = y_block_sz; y_line < windowH; y_line += y_block_sz) {
         RectangleShape rect2;
         rect2.setFillColor({0, 0, 0});
         rect2.setSize({static_cast<float>(windowW), 2});
@@ -119,21 +119,21 @@ void server(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
         clock.restart();
         ///END_OF_THE_GAME///
         if (isServerWin || isClientWin) {
-            while(window.isOpen()) {
+            while (window.isOpen()) {
                 Font font;
                 font.loadFromFile(FONT);
                 Text text;
                 text.setFont(font);
                 text.setFillColor(Color::Blue);
                 text.setPosition({200, 200});
-                if(isClientWin) {
+                if (isClientWin) {
                     text.setString("Client win!");
                 } else {
                     text.setString("Server win!");
                 }
                 Event e;
-                while(window.pollEvent(e)) {
-                    if(e.type == Event::Closed) {
+                while (window.pollEvent(e)) {
+                    if (e.type == Event::Closed) {
                         window.close();
                     }
                 }
@@ -155,7 +155,7 @@ void server(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
                         sendY = Mouse::getPosition(window).y;
                     }
                     isServerWin = isWin(mapOfTheGame);
-                    if(timer.asSeconds() >= DELAY) {
+                    if (timer.asSeconds() >= DELAY) {
                         timer = Time::Zero;
                         packet << sendX << sendY << turn << isServerWin;
                         socket.send(packet, opponent_ip, opponent_port);

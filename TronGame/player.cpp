@@ -51,13 +51,13 @@ void Player::move() {
             y += speed;
             break;
     }
-    if(x + radius <= 0)
+    if (x + radius <= 0)
         x = SCR_WIDTH;
-    if(x - radius >= SCR_WIDTH)
+    if (x - radius >= SCR_WIDTH)
         x = 0;
-    if(y <= 0)
+    if (y <= 0)
         y = SCR_HEIGHT - radius;
-    if(y >= SCR_HEIGHT)
+    if (y >= SCR_HEIGHT)
         y = 0;
     circle.setPosition({x, y});
 }

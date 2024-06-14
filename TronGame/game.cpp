@@ -28,7 +28,7 @@ void handleEndOfGame(RenderWindow& window, int whoLose) {
     Text text;
     text.setFont(font);
     text.setPosition({SCR_WIDTH / 2 - 200, 100});
-    if(whoLose == 1) {
+    if (whoLose == 1) {
         text.setFillColor(Color::Green);
     } else {
         text.setFillColor(Color::Blue);
@@ -55,7 +55,7 @@ int gameLoop() {
     bool game = true;
     int whoLose = 0;
 
-    while(window.isOpen()) {
+    while (window.isOpen()) {
         timer += clock.getElapsedTime();
         clock.restart();
         Event event;
@@ -63,32 +63,32 @@ int gameLoop() {
             if (event.type == Event::Closed) {
                 window.close();
             }
-            if(event.type == Event::KeyPressed) {
+            if (event.type == Event::KeyPressed) {
                 ///PLAYER 1///
-                if(event.key.code == Keyboard::A && player1.getDir() != 2)
+                if (event.key.code == Keyboard::A && player1.getDir() != 2)
                     player1.setDir(0);
-                if(event.key.code == Keyboard::W && player1.getDir() != 3)
+                if (event.key.code == Keyboard::W && player1.getDir() != 3)
                     player1.setDir(1);
-                if(event.key.code == Keyboard::D && player1.getDir() != 0)
+                if (event.key.code == Keyboard::D && player1.getDir() != 0)
                     player1.setDir(2);
-                if(event.key.code == Keyboard::S && player1.getDir() != 1)
+                if (event.key.code == Keyboard::S && player1.getDir() != 1)
                     player1.setDir(3);
                 ///PLAYER 2///
-                if(event.key.code == Keyboard::Left && player2.getDir() != 2)
+                if (event.key.code == Keyboard::Left && player2.getDir() != 2)
                     player2.setDir(0);
-                if(event.key.code == Keyboard::Up && player2.getDir() != 3)
+                if (event.key.code == Keyboard::Up && player2.getDir() != 3)
                     player2.setDir(1);
-                if(event.key.code == Keyboard::Right && player2.getDir() != 0)
+                if (event.key.code == Keyboard::Right && player2.getDir() != 0)
                     player2.setDir(2);
-                if(event.key.code == Keyboard::Down && player2.getDir() != 1)
+                if (event.key.code == Keyboard::Down && player2.getDir() != 1)
                     player2.setDir(3);
             }
         }
         window.clear();
         window.draw(bgSprite);
 
-        if(game) {
-            if(timer.asSeconds() >= DELAY) {
+        if (game) {
+            if (timer.asSeconds() >= DELAY) {
                 player1.move();
                 player2.move();
                 whoLose = endOfGame(player1,player2, field);
@@ -102,9 +102,9 @@ int gameLoop() {
         } else {
             handleEndOfGame(window, whoLose);
         }
-        for(float i = 0; i <= SCR_HEIGHT; i ++) {
-            for(float j = 0; j <= SCR_WIDTH; j ++) {
-                if(field[i][j] == 1) {
+        for (float i = 0; i <= SCR_HEIGHT; i ++) {
+            for (float j = 0; j <= SCR_WIDTH; j ++) {
+                if (field[i][j] == 1) {
                     CircleShape c;
                     c.setOrigin(2, 2);
                     c.setPosition({j, i});
@@ -112,7 +112,7 @@ int gameLoop() {
                     c.setFillColor({0, 0, 255});
                     window.draw(c);
                 }
-                if(field[i][j] == 2) {
+                if (field[i][j] == 2) {
                     CircleShape c;
                     c.setOrigin(2, 2);
                     c.setPosition({j, i});
