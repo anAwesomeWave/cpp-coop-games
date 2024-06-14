@@ -1,13 +1,15 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
 #include <iostream>
+#include <sys/types.h>
 #include <vector>
+
 #include "settings.hpp"
+#include "server.h"
+
 
 using namespace sf;
 
-void isWin(bool& isServerWin, int mapOfTheGame[3][3]) {
-    if((mapOfTheGame[0][0] == 1 && mapOfTheGame[0][1] == 1 && mapOfTheGame[0][2] == 1) ||
+bool isWin(const std::vector<std::vector<int>>& mapOfTheGame) {
+    if ((mapOfTheGame[0][0] == 1 && mapOfTheGame[0][1] == 1 && mapOfTheGame[0][2] == 1) ||
        (mapOfTheGame[1][0] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[1][2] == 1) ||
        (mapOfTheGame[2][0] == 1 && mapOfTheGame[2][1] == 1 && mapOfTheGame[2][2] == 1) ||
        (mapOfTheGame[0][0] == 1 && mapOfTheGame[1][0] == 1 && mapOfTheGame[2][0] == 1) ||
@@ -15,99 +17,80 @@ void isWin(bool& isServerWin, int mapOfTheGame[3][3]) {
        (mapOfTheGame[0][2] == 1 && mapOfTheGame[1][2] == 1 && mapOfTheGame[2][2] == 1) ||
        (mapOfTheGame[0][0] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[2][2] == 1) ||
        (mapOfTheGame[0][2] == 1 && mapOfTheGame[1][1] == 1 && mapOfTheGame[2][0] == 1)) {
-        isServerWin = true;
+        return true;
+    }
+    return false;
+}
 
+void drawMap(RenderWindow& window, int y_block_sz, int x_block_sz) {
+    int windowH = window.getSize().y;
+    int windowW = window.getSize().x;
+    // can test window.getSize after calling this func
+    for (int x_line = x_block_sz; x_line < windowW; x_line += x_block_sz) {
+        RectangleShape rect1;
+        rect1.setFillColor({0, 0, 0});
+        rect1.setSize({2, static_cast<float>(windowH)});
+        rect1.setPosition({static_cast<float>(x_line), 0});
+        window.draw(rect1);
+    }
+
+    for (int y_line = y_block_sz; y_line < windowH; y_line += y_block_sz) {
+        RectangleShape rect2;
+        rect2.setFillColor({0, 0, 0});
+        rect2.setSize({static_cast<float>(windowW), 2});
+        rect2.setPosition({0, static_cast<float>(y_line)});
+        window.draw(rect2);
     }
 }
 
-void drawMap(RenderWindow& window) {
-    for(int i = 200; i < SCR_WIDTH; i += 200) {
-            RectangleShape rect1, rect2;
-            rect1.setFillColor({0, 0, 0});
-            rect1.setSize({2, SCR_HEIGHT});
-            rect1.setPosition({i, 0});
-
-            rect2.setFillColor({0, 0, 0});
-            rect2.setSize({SCR_WIDTH, 2});
-            rect2.setPosition({0, i});
-            window.draw(rect1);
-            window.draw(rect2);
+void drawObjects(const std::vector<std::vector<int>>& mapOfTheGame, RenderWindow& window, Texture& texture1, Texture& texture2, int y_size, int x_size) {
+    for (int y_ind = 0; y_ind < mapOfTheGame.size(); y_ind++) {
+        for (int x_ind = 0; x_ind < mapOfTheGame[x_ind].size(); x_ind++) {
+            if (mapOfTheGame[y_ind][x_ind] != 0) {
+                Sprite s;
+                if (mapOfTheGame[y_ind][x_ind] == 1) {
+                    s.setTexture(texture1);
+                } else {
+                    s.setTexture(texture2);
+                }
+                s.setPosition({static_cast<float>(x_ind * x_size + TEXTURE_SHIFT), static_cast<float>(y_ind * y_size + TEXTURE_SHIFT)});
+                window.draw(s);
+            }
+        }
     }
 }
 
-void drawCircle(int x, int y, std::vector<std::pair<int, int>>& balls, int mapOfTheGame[3][3], int& turn, int& sendX, int& sendY) {
-    if(x < 0 || y < 0) return;
-    if(mapOfTheGame[y / 200][x / 200] == 1 || mapOfTheGame[y / 200][x / 200] == 2){
-        sendX = -1;
-        sendY = -1;
-        return;
+int processClick(int x, int y, int x_div, int y_div, int turn, std::vector<std::vector<int>>& mapOfTheGame) {
+    if (x < 0 || y < 0 || mapOfTheGame[y / y_div][x / x_div] != 0){
+        return 1;
     }
-    if(x < 200) {
-        if(y < 200) {
-            balls.push_back({50, 50});
-        } else if(y < 400) {
-            balls.push_back({50, 250});
-        } else {
-            balls.push_back({50, 450});
-        }
-    } else if(x < 400) {
-        if(y < 200) {
-            balls.push_back({250, 50});
-        } else if(y < 400) {
-            balls.push_back({250, 250});
-        } else {
-            balls.push_back({250, 450});
-        }
-    } else {
-        if(y < 200) {
-            balls.push_back({450, 50});
-        } else if(y < 400) {
-            balls.push_back({450, 250});
-        } else {
-            balls.push_back({450, 450});
-        }
-    }
-    mapOfTheGame[y / 200][x / 200] = 1;
-    sendX = x; sendY = y;
-    turn = 1;
+    mapOfTheGame[y / y_div][x / x_div] = turn + 1;
+    // server - > 1
+    // client -> 2
+    return 0;
 }
 
-void drawSquare(int x, int y, std::vector<std::pair<int, int>>& squares) {
-    if(x < 0 || y < 0) return;
-    if(x < 200) {
-        if(y < 200) {
-            squares.push_back({50, 50});
-        } else if(y < 400) {
-            squares.push_back({50, 250});
-        } else {
-            squares.push_back({50, 450});
-        }
-    } else if(x < 400) {
-        if(y < 200) {
-            squares.push_back({250, 50});
-        } else if(y < 400) {
-            squares.push_back({250, 250});
-        } else {
-            squares.push_back({250, 450});
-        }
-    } else {
-        if(y < 200) {
-            squares.push_back({450, 50});
-        } else if(y < 400) {
-            squares.push_back({450, 250});
-        } else {
-            squares.push_back({450, 450});
-        }
+int setUpWindow(RenderWindow& window, int w_width, int w_height, std::string name) {
+    // field is 3x3 and sprit will be placed at first quarter of each block
+    if (w_width % 12 != 0 || w_height % 12 != 0) {
+        return 1;
     }
-
+    window.create(VideoMode(w_width, w_height), name, Style::Titlebar | Style::Close);
+    return 0;
 }
 
-
-void server()
+void server(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
 {
-    sf::RenderWindow window(sf::VideoMode(SCR_WIDTH, SCR_HEIGHT), "TicTacToeServer");
+    sf::RenderWindow window;
+    setUpWindow(window, SCR_WIDTH, SCR_HEIGHT, "TicTacToeServer");
+    // setUpWindow(window, 900, 1200, "TicTacToeServer");
+
+
+    int x_block_size, y_block_size;
+    x_block_size = window.getSize().x / 3;
+    y_block_size = window.getSize().y / 3;
     int turn = 0; // 0 - server, 1 - client
-    int mapOfTheGame[3][3] = {0};
+    std::vector<std::vector<int>> mapOfTheGame(3, std::vector<int>(3));
 
     std::vector<std::pair<int, int>> balls;
     std::vector<std::pair<int, int>> squares;
@@ -116,7 +99,7 @@ void server()
     texture2.loadFromFile(X_TEXTURE);
 
     UdpSocket socket;
-    socket.bind(55001);
+    socket.bind(port);
     socket.setBlocking(false);
 
     Clock clock;
@@ -135,42 +118,47 @@ void server()
         timer += clock.getElapsedTime();
         clock.restart();
         ///END_OF_THE_GAME///
-        if(isServerWin || isClientWin) {
-            while(window.isOpen()) {
+        if (isServerWin || isClientWin) {
+            while (window.isOpen()) {
                 Font font;
                 font.loadFromFile(FONT);
                 Text text;
                 text.setFont(font);
                 text.setFillColor(Color::Blue);
                 text.setPosition({200, 200});
-                if(isClientWin) {
+                if (isClientWin) {
                     text.setString("Client win!");
                 } else {
                     text.setString("Server win!");
                 }
                 Event e;
-                while(window.pollEvent(e)) {
-                    if(e.type == Event::Closed) {
+                while (window.pollEvent(e)) {
+                    if (e.type == Event::Closed) {
                         window.close();
                     }
                 }
                 window.clear(Color::White);
                 window.draw(text);
                 window.display();
-                }
             }
+        }
+
         while (window.pollEvent(event)){
             if (event.type == Event::Closed) {
                 window.close();
             }
-            if(event.type == Event::MouseButtonPressed) {
-                if(event.key.code == Mouse::Left && turn == 0 && !isServerWin && !isClientWin) {
-                    drawCircle(Mouse::getPosition(window).x, Mouse::getPosition(window).y, balls, mapOfTheGame, turn, sendX, sendY);
-                    isWin(isServerWin, mapOfTheGame);
-                    if(timer.asSeconds() >= DELAY) {
+            if (event.type == Event::MouseButtonPressed) {
+                if (event.mouseButton.button == Mouse::Left && turn == 0 && !isServerWin && !isClientWin) {
+                    if (processClick(Mouse::getPosition(window).x, Mouse::getPosition(window).y, x_block_size, y_block_size, turn, mapOfTheGame) == 0) {
+                        turn = 1;
+                        sendX = Mouse::getPosition(window).x;
+                        sendY = Mouse::getPosition(window).y;
+                    }
+                    isServerWin = isWin(mapOfTheGame);
+                    if (timer.asSeconds() >= DELAY) {
                         timer = Time::Zero;
                         packet << sendX << sendY << turn << isServerWin;
-                        socket.send(packet, "127.0.0.1", 55002);
+                        socket.send(packet, opponent_ip, opponent_port);
                         packet.clear();
                     }
                 }
@@ -181,26 +169,22 @@ void server()
         IpAddress senderIp;
         unsigned short senderPort;
 
-        if(socket.receive(packet, senderIp, senderPort) == Socket::Status::Done) {
+        if (socket.receive(packet, senderIp, senderPort) == Socket::Status::Done) {
             int senderX, senderY;
             packet >> senderX >> senderY >> turn >> isClientWin;
-            mapOfTheGame[senderY / 200][senderX / 200] = 2;
-            drawSquare(senderX, senderY, squares);
+            processClick(
+                senderX,
+                senderY,
+                x_block_size,
+                y_block_size,
+                2 - turn,
+                mapOfTheGame
+            );
+
         }
 
-        for(auto i : balls) {
-            Sprite s;
-            s.setTexture(texture1);
-            s.setPosition({i.first, i.second});
-            window.draw(s);
-        }
-        for(auto i : squares) {
-            Sprite s;
-            s.setTexture(texture2);
-            s.setPosition({i.first, i.second});
-            window.draw(s);
-        }
-        drawMap(window);
+        drawObjects(mapOfTheGame, window, texture1, texture2, y_block_size, x_block_size);
+        drawMap(window, y_block_size, x_block_size);
         window.display();
     }
 }
