@@ -1,6 +1,6 @@
 /*! \file main.cpp
 \brief Main file for project.
-    GAll the games are called from here.
+    All the games are called from here.
 */
 
 #include <iostream>
