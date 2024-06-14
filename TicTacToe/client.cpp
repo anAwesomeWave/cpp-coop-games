@@ -25,11 +25,11 @@ void clientDrawMap(RenderWindow& window) {
             RectangleShape rect1, rect2;
             rect1.setFillColor({0, 0, 0});
             rect1.setSize({2, SCR_HEIGHT});
-            rect1.setPosition({i, 0});
+            rect1.setPosition({static_cast<float>(i), 0});
 
             rect2.setFillColor({0, 0, 0});
             rect2.setSize({SCR_WIDTH, 2});
-            rect2.setPosition({0, i});
+            rect2.setPosition({0, static_cast<float>(i)});
             window.draw(rect1);
             window.draw(rect2);
     }
@@ -173,7 +173,7 @@ void client(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
                 window.close();
             }
             if (event.type == Event::MouseButtonPressed) {
-                if (event.key.code == Mouse::Left && turn && !isServerWin && !isClientWin) {
+                if (event.mouseButton.button == Mouse::Left && turn && !isServerWin && !isClientWin) {
                     int x = Mouse::getPosition(window).x;
                     int y = Mouse::getPosition(window).y;
                     if (clientDrawSquare(x, y, squares, mapOfTheGame, turn, sendX, sendY) == true) {
@@ -208,13 +208,13 @@ void client(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
         for (auto i : balls) {
             Sprite s;
             s.setTexture(texture1);
-            s.setPosition({i.first, i.second});
+            s.setPosition({static_cast<float>(i.first), static_cast<float>(i.second)});
             window.draw(s);
         }
         for(auto i : squares) {
             Sprite s;
             s.setTexture(texture2);
-            s.setPosition({i.first, i.second});
+            s.setPosition({static_cast<float>(i.first), static_cast<float>(i.second)});
             window.draw(s);
         }
         clientDrawMap(window);
