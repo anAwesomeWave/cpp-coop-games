@@ -9,7 +9,6 @@ TEST_CASE("CHECK SERVER isWin")
 {
     std::vector<std::vector<int>> map(3, std::vector<int>(3));
     CHECK(isWin(map) == false);  //empty
-    // CHECK(isWin(emptyMap) == true); // should fail
     for (int i = 0; i < 3; i++) {
         map[i][i] = 1;
     }
@@ -25,7 +24,6 @@ TEST_CASE("CHECK SERVER isWin doesn't process client moves")
 {
     std::vector<std::vector<int>> map(3, std::vector<int>(3));
     CHECK(isWin(map) == false);  //empty
-    // CHECK(isWin(emptyMap) == true); // should fail
     for (int i = 0; i < 3; i++) {
         map[i][i] = 2;
     }
