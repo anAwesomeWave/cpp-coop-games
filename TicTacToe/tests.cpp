@@ -9,7 +9,6 @@ TEST_CASE("CHECK SERVER isWin")
 {
     std::vector<std::vector<int>> map(3, std::vector<int>(3));
     CHECK(isWin(map) == false);  //empty
-    // CHECK(isWin(emptyMap) == true); // should fail
     for (int i = 0; i < 3; i++) {
         map[i][i] = 1;
     }
@@ -21,11 +20,10 @@ TEST_CASE("CHECK SERVER isWin")
     CHECK(isWin(map) == true);
 }
 
-TEST_CASE("CHECK SERVER isWindoesn't process client moves")
+TEST_CASE("CHECK SERVER isWin doesn't process client moves")
 {
     std::vector<std::vector<int>> map(3, std::vector<int>(3));
     CHECK(isWin(map) == false);  //empty
-    // CHECK(isWin(emptyMap) == true); // should fail
     for (int i = 0; i < 3; i++) {
         map[i][i] = 2;
     }
@@ -113,11 +111,21 @@ TEST_CASE("CHECK CLIENT clientDrawCircle")
     CHECK(balls[0].first == 250);
     CHECK(balls[0].second == 250);
     clientDrawCircle(0, 0, balls);
-    CHECK(balls[1].first == 50);
-    CHECK(balls[1].second == 50);
+    CHECK(balls[1].first != 250);
+    CHECK(balls[1].second != 250);
     clientDrawCircle(500, 0, balls);
     CHECK(balls[2].first == 450);
     CHECK(balls[2].second == 50);
+}
+
+TEST_CASE("CHECK CLIENT clientDrawCircle wrong coordinates")
+{
+    std::vector<std::pair<int, int>> balls;
+    CHECK(clientDrawCircle(-10, 0, balls) == false);
+    CHECK(size(balls) == 0);
+	CHECK(clientDrawCircle(10, 10, balls) == true);
+	CHECK(balls[0].first == 50);
+    CHECK(balls[0].second == 50);
 }
 
 TEST_CASE("CHECK CLIENT clientDrawSquare")

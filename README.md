@@ -42,4 +42,19 @@ cmake --build .
 To run game launcher simply enter enter inside {root_dir}/build:
 ```
 ./coop-games
+
+To play TicTacToe press `1`. Then type `s` to play as a server, `c` to play as a client.
+To play Tron Game, press`2`.
+
 ```
+
+## HowToPlay:
+### TicTacToe
+The server goes first!
+
+### Tron Game aka Slithario
+Play with your friend
+
+Player 1: W - up, A - left, S - down, D - right
+
+Player 2: Left arrow - left, Up arrow - up, Right arrow - right, Down arrow - down

@@ -51,7 +51,7 @@ void clientDrawMap(sf::RenderWindow&);
 *
 * @return Program exit status
 */
-void clientDrawCircle(int, int, std::vector<std::pair<int, int>>&);
+bool clientDrawCircle(int, int, std::vector<std::pair<int, int>>&);
 
 /**
 * @brief Drawing a square
