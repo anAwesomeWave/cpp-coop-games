@@ -37,8 +37,8 @@ void clientDrawMap(RenderWindow& window) {
     }
 }
 
-void clientDrawCircle(int x, int y, std::vector<std::pair<int, int>>& balls) {
-    if (x < 0 || y < 0) return;
+bool clientDrawCircle(int x, int y, std::vector<std::pair<int, int>>& balls) {
+    if (x < 0 || y < 0) return false;
     if (x < 200) {
         if (y < 200) {
             balls.push_back({50, 50});
@@ -64,6 +64,7 @@ void clientDrawCircle(int x, int y, std::vector<std::pair<int, int>>& balls) {
             balls.push_back({450, 450});
         }
     }
+	return true;
 }
 
 bool clientDrawSquare(int x, int y, std::vector<std::pair<int, int>>& squares, const std::vector<std::vector<int>>& mapOfTheGame, int& turn, int& sendX, int& sendY) {
@@ -179,7 +180,7 @@ void client(uint16_t port, std::string&& opponent_ip, uint16_t opponent_port)
                     int x = Mouse::getPosition(window).x;
                     int y = Mouse::getPosition(window).y;
                     if (clientDrawSquare(x, y, squares, mapOfTheGame, turn, sendX, sendY) == true) {
-                        mapOfTheGame[x / 200][y / 200] = 2;
+                        mapOfTheGame[y / 200][x / 200] = 2;
                     }
 
                     ///SEND///
