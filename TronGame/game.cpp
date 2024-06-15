@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include "player.hpp"
-#include "settings.hpp"
+#include "player.h"
+#include "settings.h"
 
 using namespace sf;
 using std::vector;
@@ -42,8 +42,8 @@ int gameLoop() {
     vector<vector<int>> field(SCR_HEIGHT + 1, vector<int>(SCR_WIDTH + 1, 0));
     srand(time(NULL));
     RenderWindow window({SCR_WIDTH, SCR_HEIGHT}, "Tron Game");
-    Player player2(rand() % SCR_WIDTH, rand() % SCR_HEIGHT, {0, 255, 0}, 2);
-    Player player1(rand() % SCR_WIDTH, rand() % SCR_HEIGHT, {0, 0, 255}, 2);
+    Player player2(rand() % SCR_WIDTH, rand() % SCR_HEIGHT, {0, 255, 0}, 1);
+    Player player1(rand() % SCR_WIDTH, rand() % SCR_HEIGHT, {0, 0, 255}, 1);
     Clock clock;
     Time timer;
 

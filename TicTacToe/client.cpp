@@ -2,7 +2,7 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 #include <vector>
-#include "settings.hpp"
+#include "settings.h"
 
 
 using namespace sf;

@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include "player.hpp"
-#include "settings.hpp"
+#include "player.h"
+#include "settings.h"
 
 Player::Player(float X, float Y, sf::Color color, int rad, int speed) {
     x = X; 

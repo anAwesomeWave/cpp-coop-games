@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "game.h"
-#include "player.hpp"
-#include "settings.hpp"
+#include "player.h"
+#include "settings.h"
 
 using std::vector;
 
